@@ -1,8 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-import raylib as rl
-
+from src.events import Event
 from src.contexts import Context
 
 
@@ -11,11 +10,9 @@ class WindowState(ABC):
         pass
 
     @abstractmethod
-    def handle_input(
-        self, key: rl.KeyboardKey, mouse: Optional[tuple[int, int]] = None
-    ) -> None:
+    def handle_input(self) -> Optional[Event]:
         pass
 
     @abstractmethod
-    def draw(self, ctx: Context) -> None:
+    def draw(self, ctx: Context, width: int, height: int) -> None:
         pass

@@ -1,9 +1,10 @@
 ### Essential
 - [x] Server/Client connection
-- [ ] Player window
-    - [ ] Insert ip screen
 - [ ] Host window
-    - [ ] All players list
+    - [ ] Set port screen
+    - [ ] Menu with player list
+- [ ] Player window
+    - [ ] Select port screen
 - [ ] 
 
 ### Bugs

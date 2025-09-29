@@ -1,18 +1,75 @@
-import raylib as rl
+from functools import cache
+from typing import Callable, Optional
 
-from typing import Optional
-from src.windows.window_state import WindowState
+import raylib as rl
+from src.events import Event, StartServer
+from src.windows import WindowState
 from src.contexts import Context
 
 
 class ServerMenu(WindowState):
+    MIN_PORT: int = 1024
+    MAX_PORT: int = 49151
+    MAX_PORT_ENTER: int = 99999
+    DEFAULT_PORT: int = 8080
+
     def __init__(self) -> None:
-        pass
+        self.enter_text = b"enter port:"
+        self._port_number: int = self.DEFAULT_PORT
 
-    def handle_input(
-        self, key: rl.KeyboardKey, mouse: Optional[tuple[int, int]] = None
-    ) -> None:
-        return super().handle_input(key, mouse)
+    def handle_input(self) -> Optional[Event]:
+        key = rl.GetKeyPressed()
+        match key:
+            case number if rl.KEY_ZERO <= number and key <= rl.KEY_NINE:
+                self._append_to_port(number)
+            case rl.KEY_BACKSPACE:
+                self._port_number //= 10
+            case rl.KEY_ENTER:
+                port = (
+                    self._port_number if self._is_port_in_range() else self.DEFAULT_PORT
+                )
+                return StartServer(port)
 
-    def draw(self, ctx: Context) -> None:
-        return super().draw(ctx)
+        return None
+
+    def draw(self, ctx: Context, width: int, height: int) -> None:
+        text_drawer = self._center_text_drawer(ctx, width, height)
+        text_drawer(self.enter_text, -32)
+        text_drawer(self._port_to_bytes(self._port_number), 0)
+        if not self._is_port_in_range():
+            range_text: str = (
+                f"Not in range [{self.MIN_PORT}, {self.MAX_PORT}], will set '{self.DEFAULT_PORT}'"
+            )
+            text_drawer(range_text.encode(), 64)
+
+    def _append_to_port(self, rl_key_number: int) -> None:
+        new_port = 10 * self._port_number + rl_key_number - rl.KEY_ZERO
+        self._port_number = min(new_port, self.MAX_PORT_ENTER)
+
+    def _center_text_drawer(
+        self, ctx: Context, width: int, height: int
+    ) -> Callable[[bytes, int], None]:
+        def drawer(text: bytes, offset: int) -> None:
+            size = self._text_size(ctx, text)
+            position = [(width - size.x) // 2, height // 2 - size.y + offset]
+            rl.DrawTextEx(
+                ctx.font,
+                text,
+                position,
+                ctx.CONSTANTS.FONT_SIZE_SMALL,
+                0,
+                ctx.CONSTANTS.COLORS.BEIGE,
+            )
+
+        return drawer
+
+    @cache
+    def _text_size(self, ctx: Context, text: bytes):
+        return rl.MeasureTextEx(ctx.font, text, ctx.CONSTANTS.FONT_SIZE_SMALL, 0)
+
+    @cache
+    def _port_to_bytes(self, number: int) -> bytes:
+        return str(number).encode()
+
+    def _is_port_in_range(self) -> bool:
+        return self.MIN_PORT <= self._port_number and self._port_number <= self.MAX_PORT
