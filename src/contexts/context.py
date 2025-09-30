@@ -1,3 +1,4 @@
+import os
 from typing import Any, Optional
 import raylib as rl
 
@@ -21,8 +22,12 @@ class Context:
     CONSTANTS: Constants = Constants()
     SETTINGS: Settings = Settings()
 
-    def load_font(self, path: bytes) -> None:
-        self.SETTINGS.FONT = rl.LoadFont(path)
+    def load_font(self, font_name: str) -> None:
+        here_path = os.path.dirname(__file__)
+        root_path = os.path.join(here_path, "..", "..")
+        root_abs = os.path.abspath(root_path)
+        font_path = os.path.join(root_abs, "assets", "fonts", font_name)
+        self.SETTINGS.FONT = rl.LoadFont(font_path.encode())
 
     @property
     def font(self):

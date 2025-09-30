@@ -13,15 +13,16 @@ class ServerSocket:
     CONSOLE_LOG.setFormatter(LOG_FORMATTER)
     LOGGER.addHandler(CONSOLE_LOG)
 
-    def __init__(self, port: int) -> None:
+    def __init__(self, port: int, max_room: int = 6) -> None:
         self._port: int = port
+        self._max_room: int = max_room
         self._conns: list[socket.socket] = []
 
     def run(self) -> None:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
             sock.bind((self.HOST, self._port))
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-            sock.listen(2)
+            sock.listen(self._max_room)
             while True:
                 connection, address = sock.accept()
                 connection.send(f"Hello {address}".encode())

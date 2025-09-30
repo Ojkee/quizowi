@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
 
-from src.events import Event
+from src.tasks import Task
 from src.contexts import Context
 
 
@@ -10,7 +10,7 @@ class WindowState(ABC):
         pass
 
     @abstractmethod
-    def handle_input(self) -> Optional[Event]:
+    def handle_input(self) -> Optional[Task]:
         pass
 
     @abstractmethod

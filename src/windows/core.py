@@ -1,5 +1,8 @@
+from queue import Queue
 import raylib as rl
 
+
+from src.tasks import Task, QuitApp
 from src.windows.window_state import WindowState
 from src.contexts import Context
 
@@ -14,13 +17,16 @@ class Window:
 
         self._state: WindowState = start_state
 
-    def loop(self, ctx: Context) -> None:
+    def loop(self, ctx: Context, tasks: Queue[Task]) -> None:
         while not rl.WindowShouldClose():
-            self._handle_input()
+            self._handle_input(tasks)
             self._draw(ctx)
+        tasks.put(QuitApp())
 
-    def _handle_input(self) -> None:
-        self._state.handle_input()
+    def _handle_input(self, tasks: Queue[Task]) -> None:
+        task = self._state.handle_input()
+        if task:
+            tasks.put(task)
 
     def _draw(self, ctx: Context) -> None:
         rl.BeginDrawing()

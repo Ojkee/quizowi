@@ -2,7 +2,7 @@ from functools import cache
 from typing import Callable, Optional
 
 import raylib as rl
-from src.events import Event, StartServer
+from src.tasks import Task, StartServer
 from src.windows import WindowState
 from src.contexts import Context
 
@@ -17,7 +17,7 @@ class ServerMenu(WindowState):
         self.enter_text = b"enter port:"
         self._port_number: int = self.DEFAULT_PORT
 
-    def handle_input(self) -> Optional[Event]:
+    def handle_input(self) -> Optional[Task]:
         key = rl.GetKeyPressed()
         match key:
             case number if rl.KEY_ZERO <= number and key <= rl.KEY_NINE:
