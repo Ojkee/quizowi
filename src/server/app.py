@@ -1,4 +1,3 @@
-import asyncio
 import threading
 from typing import Optional
 from src.tasks import Task, QuitApp, StartServer, StopServer
@@ -27,11 +26,7 @@ class ServerApp:
         self._window.loop(self.ctx, self.tasks)
 
         self.tasks.put(QuitApp())
-        self._sniffer_t.join()
-        if self._socket:
-            self._socket.stop()
-            self._socket.join()
-            self._socket = None
+        self._clear()
 
     def _event_sniffer(self) -> None:
         while self.running.is_set():
@@ -43,7 +38,12 @@ class ServerApp:
                     self._socket.start()
                 case StopServer() if self._socket:
                     self._socket.stop()
-                    self._socket.join()
                     self._socket = None
                 case task:
                     print(f"throw away: {task.__class__.__name__}")
+
+    def _clear(self) -> None:
+        self._sniffer_t.join()
+        if self._socket:
+            self._socket.stop()
+            self._socket = None

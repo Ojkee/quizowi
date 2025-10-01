@@ -1,11 +1,16 @@
 ### Essential
 - [x] Server/Client connection
 - [ ] Host window
-    - [ ] Set port screen
+    - [x] Set port screen
     - [ ] Menu with player list
 - [ ] Player window
-    - [ ] Select port screen
-- [ ] 
+    - [ ] Enter nick, ip and port screen
+
+### Ongoing
+- [ ] Handling client disconnections on the server
+- [ ] Send player id after connecting to server for the first time
+- [ ] Change host screen upon setting socket from port menu to waiting room with connected player list
+- [ ] Player connection screen
 
 ### Bugs
 

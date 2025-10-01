@@ -1,6 +1,7 @@
 import sys
 
 from src.server import ServerApp
+from src.client import ClientSocket
 
 
 def main():
@@ -17,7 +18,8 @@ def run_server() -> None:
 
 
 def run_client() -> None:
-    pass
+    client = ClientSocket(8080)
+    client.connect()
 
 
 if __name__ == "__main__":

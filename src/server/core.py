@@ -42,6 +42,8 @@ class ServerSocket:
             writer.close()
             await writer.wait_closed()
             return
+        addr = writer.get_extra_info("peername")
+        LOGGER.info(f"CONNECTED: {addr}")
         self._clients[reader] = ConnectedClient(writer)
 
     async def _start(self) -> None:
@@ -52,7 +54,7 @@ class ServerSocket:
             try:
                 await self._server.serve_forever()
             except asyncio.CancelledError:
-                pass
+                LOGGER.info("Cancelling server loop")
 
     async def _disconnect_clients(self) -> None:
         for _, client in self._clients.items():
@@ -72,6 +74,5 @@ class ServerSocket:
         shutdown_status.result()
 
         self._loop.call_soon_threadsafe(self._loop.stop)
-
-    def join(self) -> None:
+        LOGGER.info("Shut down")
         self._self_t.join()
