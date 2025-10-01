@@ -13,6 +13,7 @@ class Window:
     TITLE: bytes = b"Quizowi"
 
     def __init__(self, start_state: WindowState) -> None:
+        rl.SetTraceLogLevel(rl.LOG_NONE)
         rl.InitWindow(self.WIDTH, self.HEIGHT, self.TITLE)
 
         self._state: WindowState = start_state
