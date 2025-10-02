@@ -24,7 +24,7 @@ class ServerSocket:
         self._loop = asyncio.new_event_loop()
         self._self_t = threading.Thread(target=self._run_loop, daemon=True)
 
-        self._clients: dict[asyncio.StreamReader, ConnectedClient] = {}
+        self._clients: set[ConnectedClient] = set()
         self._server: Optional[asyncio.Server] = None
 
     def start(self) -> None:
@@ -44,7 +44,25 @@ class ServerSocket:
             return
         addr = writer.get_extra_info("peername")
         LOGGER.info(f"CONNECTED: {addr}")
-        self._clients[reader] = ConnectedClient(writer)
+        client = ConnectedClient(writer)
+        self._clients.add(client)
+
+        try:
+            while True:
+                data = await reader.read()
+                if not data:
+                    break
+                msg = f"ECHO: {data.decode().strip()}".encode()
+                writer.write(msg)
+                await writer.drain()
+        except (asyncio.IncompleteReadError, ConnectionResetError) as e:
+            LOGGER.warning(f"Client disconnected unexpectedly: {addr} - {e}")
+        except asyncio.CancelledError:
+            pass
+        finally:
+            await client.disconnect()
+            self._clients.remove(client)
+            print(f"DISCONNECTED: {addr}")
 
     async def _start(self) -> None:
         self._server = await asyncio.start_server(
@@ -57,7 +75,7 @@ class ServerSocket:
                 LOGGER.info("Cancelling server loop")
 
     async def _disconnect_clients(self) -> None:
-        for _, client in self._clients.items():
+        for client in self._clients:
             await client.disconnect()
         self._clients.clear()
 
@@ -65,10 +83,10 @@ class ServerSocket:
         LOGGER.info("Shutting down...")
 
         async def shutdown() -> None:
+            await self._disconnect_clients()
             if self._server:
                 self._server.close()
                 await self._server.wait_closed()
-            await self._disconnect_clients()
 
         shutdown_status = asyncio.run_coroutine_threadsafe(shutdown(), self._loop)
         shutdown_status.result()

@@ -8,5 +8,6 @@ class ConnectedClient:
         self.nick: str = ""
 
     async def disconnect(self) -> None:
-        self._writer.close()
-        await self._writer.wait_closed()
+        if not self._writer.is_closing():
+            self._writer.close()
+            await self._writer.wait_closed()
