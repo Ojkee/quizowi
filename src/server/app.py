@@ -1,10 +1,11 @@
 import threading
 from typing import Optional
+from queue import Queue
+
 from src.tasks import Task, QuitApp, StartServer, StopServer
 from src.server.core import ServerSocket
 from src.windows import Window, ServerMenu
 from src.contexts import Context
-from queue import Queue
 
 
 class ServerApp:

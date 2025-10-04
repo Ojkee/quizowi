@@ -49,7 +49,7 @@ class ServerSocket:
 
         try:
             while True:
-                data = await reader.read()
+                data = await reader.read(1024)
                 if not data:
                     break
                 msg = f"ECHO: {data.decode().strip()}".encode()

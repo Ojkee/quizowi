@@ -1,21 +1,20 @@
 ### Essential
-- [x] Server/Client connection
+- [] Server/Client connection
+    - [x] Working connection
+    - [ ] Keeping connection alive on clint side
 - [ ] Host window
     - [x] Set port screen
+        - [ ] Change host screen upon setting socket from port menu to waiting room with connected player list
     - [ ] Menu with player list
+        - [ ] Send player id after connecting to server for the first time
 - [ ] Player window
     - [ ] Enter nick, ip and port screen
-
-### Ongoing
-- [ ] Handling client disconnections on the server
-- [ ] Send player id after connecting to server for the first time
-- [ ] Change host screen upon setting socket from port menu to waiting room with connected player list
-- [ ] Player connection screen
 
 ### Bugs
 
 
 ### Extras
+- [ ] Quiz creator
 
 
 ### Modes 
