@@ -2,9 +2,9 @@ import threading
 from typing import Optional
 from queue import Queue
 
-from src.tasks import Task, QuitApp
+from src.tasks import Task, QuitApp, ConnectToServer
 from src.client.core import ClientSocket
-from src.windows import Window, Placeholder
+from src.windows import Window, ClientMenu
 from src.contexts import Context
 
 
@@ -13,7 +13,7 @@ class ClientApp:
         self.running = threading.Event()
         self.running.set()
 
-        self._window = Window(Placeholder())
+        self._window = Window(ClientMenu())
         self._socket: Optional[ClientSocket] = None
 
         self.ctx = Context()
@@ -34,6 +34,8 @@ class ClientApp:
             match self.tasks.get(block=True):
                 case QuitApp():
                     self.running.clear()
+                case ConnectToServer(ip=ip, port=port):
+                    print(ip, port)
                 case task:
                     print(f"throw away: {task.__class__.__name__}")
 

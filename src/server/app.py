@@ -34,8 +34,8 @@ class ServerApp:
             match self.tasks.get(block=True):
                 case QuitApp():
                     self.running.clear()
-                case StartServer(port=p) if not self._socket:
-                    self._socket = ServerSocket(p)
+                case StartServer(port=port) if not self._socket:
+                    self._socket = ServerSocket(port)
                     self._socket.start()
                 case StopServer() if self._socket:
                     self._socket.stop()
