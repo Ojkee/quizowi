@@ -2,7 +2,7 @@ from functools import cache
 from typing import Optional
 
 import raylib as rl
-from src.tasks import Task, StartServer
+from src.tasks import Task, ConnectToServer
 from src.windows import WindowState
 from src.contexts import Context
 
@@ -18,7 +18,11 @@ class ClientMenu(WindowState):
         self._port_number: int = self.DEFAULT_PORT
 
     def handle_input(self) -> Optional[Task]:
-        # TODO: implement
+        key = rl.GetKeyPressed()
+        match key:
+            case rl.KEY_ENTER:
+                return ConnectToServer("localhost", 8080)
+
         return None
 
     def draw(self, ctx: Context, width: int, height: int) -> None:

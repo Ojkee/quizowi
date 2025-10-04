@@ -14,6 +14,7 @@
 
 
 ### Extras
+- [ ] Abstract App
 - [ ] Quiz creator
 
 

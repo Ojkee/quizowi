@@ -35,6 +35,7 @@ class ServerMenu(WindowState):
     def draw(self, ctx: Context, width: int, height: int) -> None:
         text_drawer = self._center_text_drawer(ctx, width, height)
         text_drawer(self.enter_text, -32)
+        # TODO: make rectangle background for port number
         text_drawer(self._port_to_bytes(self._port_number), 0)
         if not self._is_port_in_range():
             range_text: str = (
