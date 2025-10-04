@@ -10,9 +10,9 @@ class Placeholder(WindowState):
     def __init__(self) -> None:
         super().__init__()
 
+    def handle_input(self) -> Optional[Task]:
+        return super().handle_input()
+
     def draw(self, ctx: Context, width: int, height: int) -> None:
         text_drawer = self._center_text_drawer(ctx, width, height)
         text_drawer(b"PLACEHOLDER", 0)
-
-    def handle_input(self) -> Optional[Task]:
-        return None

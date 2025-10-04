@@ -34,7 +34,7 @@ class ClientApp:
             match self.tasks.get(block=True):
                 case QuitApp():
                     self.running.clear()
-                case ConnectToServer(ip=ip, port=port) if not self._socket:
+                case ConnectToServer(ip=ip, port=port, nick=_) if not self._socket:
                     self._socket = ClientSocket(ip, port)
                     self._socket.connect()
                 case DisconnectFromServer() if self._socket:

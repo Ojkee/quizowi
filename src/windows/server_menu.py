@@ -18,9 +18,8 @@ class ServerMenu(WindowState):
         self._port_number: int = self.DEFAULT_PORT
 
     def handle_input(self) -> Optional[Task]:
-        key = rl.GetKeyPressed()
-        match key:
-            case number if rl.KEY_ZERO <= number and key <= rl.KEY_NINE:
+        match rl.GetKeyPressed():
+            case number if rl.KEY_ZERO <= number and number <= rl.KEY_NINE:
                 self._append_to_port(number)
             case rl.KEY_BACKSPACE:
                 self._port_number //= 10

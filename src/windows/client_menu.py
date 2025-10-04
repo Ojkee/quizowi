@@ -14,20 +14,20 @@ class ClientMenu(WindowState):
     DEFAULT_PORT: int = 8080
 
     def __init__(self) -> None:
-        self.enter_text = b"enter port:"
+        self._nick: str = ""
+        self.enter_port = b"enter port:"
         self._port_number: int = self.DEFAULT_PORT
 
     def handle_input(self) -> Optional[Task]:
-        key = rl.GetKeyPressed()
-        match key:
+        match rl.GetKeyPressed():
             case rl.KEY_ENTER:
-                return ConnectToServer("localhost", 8080)
+                return ConnectToServer("localhost", 8080, self._nick)
 
-        return None
+        return super().handle_input()
 
     def draw(self, ctx: Context, width: int, height: int) -> None:
         text_drawer = self._center_text_drawer(ctx, width, height)
-        text_drawer(self.enter_text, -32)
+        text_drawer(self.enter_port, -32)
         text_drawer(self._port_to_bytes(self._port_number), 0)
         if not self._is_port_in_range():
             range_text: str = (

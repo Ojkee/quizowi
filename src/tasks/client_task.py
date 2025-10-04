@@ -1,12 +1,14 @@
+from dataclasses import dataclass
 from .task import Task
 
 
+@dataclass(frozen=True)
 class ConnectToServer(Task):
-    def __init__(self, ip: str, port: int) -> None:
-        super().__init__()
-        self.ip: str = ip
-        self.port: int = port
+    ip: str
+    port: int
+    nick: str
 
 
+@dataclass(frozen=True)
 class DisconnectFromServer(Task):
     pass
