@@ -1,7 +1,7 @@
 ### Essential
-- [] Server/Client connection
+- [x] Server/Client connection
     - [x] Working connection
-    - [ ] Keeping connection alive on clint side
+    - [x] Keeping connection alive on clint side
 - [ ] Host window
     - [x] Set port screen
         - [ ] Change host screen upon setting socket from port menu to waiting room with connected player list

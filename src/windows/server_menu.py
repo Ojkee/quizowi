@@ -1,5 +1,5 @@
 from functools import cache
-from typing import Callable, Optional
+from typing import Optional
 
 import raylib as rl
 from src.tasks import Task, StartServer
@@ -45,27 +45,6 @@ class ServerMenu(WindowState):
     def _append_to_port(self, rl_key_number: int) -> None:
         new_port = 10 * self._port_number + rl_key_number - rl.KEY_ZERO
         self._port_number = min(new_port, self.MAX_PORT_ENTER)
-
-    def _center_text_drawer(
-        self, ctx: Context, width: int, height: int
-    ) -> Callable[[bytes, int], None]:
-        def drawer(text: bytes, offset: int) -> None:
-            size = self._text_size(ctx, text)
-            position = [(width - size.x) // 2, height // 2 - size.y + offset]
-            rl.DrawTextEx(
-                ctx.font,
-                text,
-                position,
-                ctx.CONSTANTS.FONT_SIZE_SMALL,
-                0,
-                ctx.CONSTANTS.COLORS.BEIGE,
-            )
-
-        return drawer
-
-    @cache
-    def _text_size(self, ctx: Context, text: bytes):
-        return rl.MeasureTextEx(ctx.font, text, ctx.CONSTANTS.FONT_SIZE_SMALL, 0)
 
     @cache
     def _port_to_bytes(self, number: int) -> bytes:

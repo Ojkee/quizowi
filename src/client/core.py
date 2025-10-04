@@ -1,53 +1,50 @@
-import sys
 import asyncio
+from typing import Optional
 
 
 class ClientSocket:
     def __init__(self, port: int) -> None:
         self._port = port
+        self._reader: Optional[asyncio.StreamReader] = None
+        self._writer: Optional[asyncio.StreamWriter] = None
+        self._connected = asyncio.Event()
 
     async def _connect(self) -> None:
-        reader, writer = await asyncio.open_connection("localhost", self._port)
-
-        listener = asyncio.create_task(self._listener(reader))
-        sender = asyncio.create_task(self._sender(writer))
-
-        _, pending = await asyncio.wait(
-            {listener, sender}, return_when=asyncio.FIRST_COMPLETED
+        self._reader, self._writer = await asyncio.open_connection(
+            "localhost", self._port
         )
+        self._connected.set()
 
-        for task in pending:
-            task.cancel()
+        await self._listener()
 
-        writer.close()
-        await writer.wait_closed()
+        self._writer.close()
+        await self._writer.wait_closed()
         print("disconnected")
 
-    async def _listener(self, reader: asyncio.StreamReader) -> None:
+    async def _listener(self) -> None:
         try:
             while True:
-                server_msg = await reader.read(1024)
+                server_msg = (
+                    await self._reader.read(1024)
+                    if self._reader
+                    else b"Not connected yet"
+                )
                 if not server_msg:
                     break
-                print(server_msg)
+                print(server_msg.decode("utf-8"))
         except asyncio.CancelledError:
             pass
-
-    async def _sender(self, writer: asyncio.StreamWriter) -> None:
-        try:
-            while True:
-                msg = await self._wait_for_input("> ")
-                if msg.lower() == "quit":
-                    break
-                writer.write(msg.encode())
-                await writer.drain()
-        except asyncio.CancelledError:
-            pass
-
-    async def _wait_for_input(self, ss: str) -> str:
-        sys.stdout.write(ss)
-        sys.stdout.flush()
-        return await asyncio.get_event_loop().run_in_executor(None, sys.stdin.readline)
 
     def connect(self) -> None:
         asyncio.run(self._connect())
+
+    async def send(self, message: str) -> None:
+        await self._connected.wait()
+        if not self._writer:
+            return
+        self._writer.write(message.encode("utf-8"))
+        await self._writer.drain()
+
+    def stop(self) -> None:
+        # TODO: implement disconnection
+        pass

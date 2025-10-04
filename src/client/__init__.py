@@ -1,1 +1,1 @@
-from .core import ClientSocket
+from .app import ClientApp

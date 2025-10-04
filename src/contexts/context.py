@@ -11,6 +11,7 @@ class Colors:
 class Constants:
     COLORS: Colors = Colors()
     FONT_SIZE_SMALL = 32
+    FONT_SPACING = 0
 
 
 class Settings:
