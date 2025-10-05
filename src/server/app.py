@@ -29,6 +29,7 @@ class ServerApp:
         self._window.loop(self.ctx, self.tasks)
 
         self.tasks.put(QuitApp())
+        self._clear()
 
     def _event_sniffer(self) -> None:
         while self.running.is_set():
@@ -44,7 +45,6 @@ class ServerApp:
 
     def _quit(self) -> None:
         self.running.clear()
-        self._clear()
 
     def _open_lobby(self, port: int) -> None:
         self._socket = ServerSocket(self._event_bus, port)
