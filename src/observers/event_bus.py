@@ -1,8 +1,9 @@
 import threading
-from typing import Callable, Type
+from typing import Callable, Type, TypeVar
 from .observer import EventType
 
-Action = Callable[[EventType], None]
+T = TypeVar("T", bound=EventType)
+Action = Callable[[T], None]
 
 
 class EventBus:
