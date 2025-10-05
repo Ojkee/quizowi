@@ -2,22 +2,30 @@
 - [x] Server/Client connection
     - [x] Working connection
     - [x] Keeping connection alive on clint side
+- [x] Changing screen technology
+- [ ] Messeges technology
+    - [ ] Client sends nickname when connected for the first time
 - [ ] Host window
-    - [x] Set port screen
-        - [ ] Change host screen upon setting socket from port menu to waiting room with connected player list
-    - [ ] Menu with player list
-        - [ ] Send player id after connecting to server for the first time
+    - [x] Menu
+        - [x] Set port 
+    - [x] Lobby 
+        - [x] Player list
+        - [ ] Game list
 - [ ] Player window
-    - [ ] Enter nick, ip and port screen
+    - [ ] Menu
+        - [ ] Enter nick, ip and port 
+    - [ ] Lobby
+        - [ ] Game list (placeholder list for now)
 
 ### Bugs
 
 
 ### Extras
-- [ ] Abstract App
+- [ ] Abstract App class
 - [ ] Quiz creator
 
 
-### Modes 
+### Games
 - [ ] Quiz/Va Banque
 - [ ] Drawing from listening & guessing what was drawn
+- [ ] Wheel of fortune
