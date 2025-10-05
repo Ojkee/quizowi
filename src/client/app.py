@@ -2,6 +2,7 @@ import threading
 from typing import Optional
 from queue import Queue
 
+from src.observers import EventBus
 from src.tasks import Task, QuitApp, ConnectToServer, DisconnectFromServer
 from src.client.core import ClientSocket
 from src.windows import Window, ClientMenu
@@ -13,7 +14,8 @@ class ClientApp:
         self.running = threading.Event()
         self.running.set()
 
-        self._window = Window(ClientMenu())
+        self._event_bus = EventBus()
+        self._window = Window(ClientMenu(self._event_bus))
         self._socket: Optional[ClientSocket] = None
 
         self.ctx = Context()

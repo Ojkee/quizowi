@@ -1,14 +1,15 @@
 from typing import Optional
 
 
+from src.observers import EventBus
 from src.windows.window_state import WindowState
 from src.tasks.task import Task
 from src.contexts.context import Context
 
 
 class Placeholder(WindowState):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, event_bus: EventBus) -> None:
+        super().__init__(event_bus)
 
     def handle_input(self) -> Optional[Task]:
         return super().handle_input()

@@ -23,6 +23,9 @@ class Context:
     CONSTANTS: Constants = Constants()
     SETTINGS: Settings = Settings()
 
+    def __init__(self):
+        pass
+
     def load_font(self, font_name: str) -> None:
         here_path = os.path.dirname(__file__)
         root_path = os.path.join(here_path, "..", "..")

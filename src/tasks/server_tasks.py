@@ -1,11 +1,6 @@
 from dataclasses import dataclass
 
-from typing import TYPE_CHECKING
-
 from .task import Task
-
-if TYPE_CHECKING:
-    from src.windows.window_state import WindowState
 
 
 @dataclass(frozen=True)
@@ -19,5 +14,15 @@ class StopServer(Task):
 
 
 @dataclass(frozen=True)
-class ChangeWindowState(Task):
-    window_state: "WindowState"
+class EnterGamePicker(Task):
+    pass
+
+
+@dataclass(frozen=True)
+class StartGame(Task):
+    game_name: str
+
+
+@dataclass(frozen=True)
+class StopGame(Task):
+    pass

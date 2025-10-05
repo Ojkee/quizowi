@@ -4,13 +4,14 @@ from typing import Callable, Optional
 
 import raylib as rl
 
+from src.observers import EventBus
 from src.tasks import Task
 from src.contexts import Context
 
 
 class WindowState(ABC):
-    def __init__(self) -> None:
-        pass
+    def __init__(self, event_bus: EventBus) -> None:
+        self._event_bus = event_bus
 
     @abstractmethod
     def handle_input(self) -> Optional[Task]:

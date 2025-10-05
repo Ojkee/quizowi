@@ -2,6 +2,7 @@ from functools import cache
 from typing import Optional
 
 import raylib as rl
+from src.observers import EventBus
 from src.tasks import Task, ConnectToServer
 from src.windows import WindowState
 from src.contexts import Context
@@ -13,7 +14,8 @@ class ClientMenu(WindowState):
     MAX_PORT_ENTER: int = 99999
     DEFAULT_PORT: int = 8080
 
-    def __init__(self) -> None:
+    def __init__(self, event_bus: EventBus) -> None:
+        super().__init__(event_bus)
         self._nick: str = ""
         self.enter_port = b"enter port:"
         self._port_number: int = self.DEFAULT_PORT
