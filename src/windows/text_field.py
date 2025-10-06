@@ -17,10 +17,10 @@ class TextField:
     PAD: int = 4
     ROUNDNESS: float = 0.6
 
-    def __init__(self, text: str = "") -> None:
+    def __init__(self, data: str = "") -> None:
         self._inner: Optional[Rect] = None
         self._outer: Optional[Rect] = None
-        self._text: str = text
+        self._data = data
 
     def set_size(self, x: int, y: int, w: int, h: int) -> None:
         self._inner = Rect(
@@ -48,18 +48,15 @@ class TextField:
         rl.DrawRectangleRounded(
             self._inner.aslist(), self.ROUNDNESS, 0, ctx.CONSTANTS.COLORS.DARK_GREY
         )
-        text_drawer(self._text.encode("utf-8"), self._outer.x, self._outer.y)
-
-    def push(self, value: str) -> None:
-        self._text += value
-
-    def pop(self) -> None:
-        if self._text:
-            self._text = self._text[:-1]
+        text_drawer(self.text.encode("utf-8"), self._outer.x, self._outer.y)
 
     @property
     def text(self) -> str:
-        return self._text
+        return self._data
+
+    @text.setter
+    def text(self, value: str) -> None:
+        self._data = value
 
     @property
     def width(self) -> int:
