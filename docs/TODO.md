@@ -18,12 +18,14 @@
         - [ ] Game list (placeholder list for now)
 
 ### Bugs
-
+- [x] (!!) 100% CPU core usage 
+    - FIX: set raylib target fps to fixed number 
+- [ ] (ClientApp) While connecting to non-existing server, socket get initiazied and blocks from connecting again 
 
 ### Extras
 - [ ] Abstract App class
 - [ ] Quiz creator
-
+- [ ] Resizable window
 
 ### Games
 - [ ] Quiz/Va Banque

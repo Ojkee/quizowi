@@ -15,6 +15,7 @@ class ClientApp:
         self.running.set()
 
         self._event_bus = EventBus()
+
         self._window = Window(ClientMenu(self._event_bus))
         self._socket: Optional[ClientSocket] = None
 

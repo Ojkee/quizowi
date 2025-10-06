@@ -18,9 +18,11 @@ class Window:
 
         rl.SetTraceLogLevel(rl.LOG_NONE)
         rl.InitWindow(self.WIDTH, self.HEIGHT, self.TITLE)
+        rl.SetTargetFPS(60)
         rl.SetExitKey(rl.KEY_NULL)
 
         self._state: WindowState = start_state
+        self._state.set_size(self.WIDTH, self.HEIGHT)
 
     def loop(self, ctx: Context, tasks: Queue[Task]) -> None:
         while not rl.WindowShouldClose():
@@ -31,6 +33,7 @@ class Window:
     def change_state(self, window_state: WindowState) -> None:
         with self._lock:
             self._state = window_state
+            self._state.set_size(self.WIDTH, self.HEIGHT)
 
     def _handle_input(self, tasks: Queue[Task]) -> None:
         task = self._state.handle_input()
@@ -40,7 +43,7 @@ class Window:
     def _draw(self, ctx: Context) -> None:
         rl.BeginDrawing()
         rl.ClearBackground(ctx.SETTINGS.BACKGROUND_COLOR)
-        self._state.draw(ctx, self.WIDTH, self.HEIGHT)
+        self._state.draw(ctx)
         rl.EndDrawing()
 
     def __exit__(self) -> None:

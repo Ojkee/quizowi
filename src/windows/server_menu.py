@@ -33,16 +33,20 @@ class ServerMenu(WindowState):
 
         return None
 
-    def draw(self, ctx: Context, width: int, height: int) -> None:
-        text_drawer = self._center_text_drawer(ctx, width, height)
-        text_drawer(self.enter_text, -32)
+    def draw(self, ctx: Context) -> None:
+        assert (
+            self._width and self._height
+        ), "Window state size must be set `.set_size(width, height)`"
+
+        text_drawer = self._center_text_drawer(ctx, self._width, self._height)
+        text_drawer(self.enter_text, 0, -32)
         # TODO: make rectangle background for port number
-        text_drawer(self._port_to_bytes(self._port_number), 0)
+        text_drawer(self._port_to_bytes(self._port_number), 0, 0)
         if not self._is_port_in_range():
             range_text: str = (
                 f"Not in range [{self.MIN_PORT}, {self.MAX_PORT}], will set '{self.DEFAULT_PORT}'"
             )
-            text_drawer(range_text.encode(), 64)
+            text_drawer(range_text.encode(), 0, 64)
 
     def _append_to_port(self, rl_key_number: int) -> None:
         new_port = 10 * self._port_number + rl_key_number - rl.KEY_ZERO

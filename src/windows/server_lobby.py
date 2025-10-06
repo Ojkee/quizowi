@@ -19,7 +19,9 @@ class ServerLobby(WindowState):
     def handle_input(self) -> Optional[Task]:
         return super().handle_input()
 
-    def draw(self, ctx: Context, width: int, height: int) -> None:
+    def draw(self, ctx: Context) -> None:
+        assert self._width, "Window state size must be set `.set_size(width, height)`"
+
         for i, player in enumerate(self._players_info):
             nick = player.encode("utf-8")
             size = rl.MeasureTextEx(
@@ -31,7 +33,7 @@ class ServerLobby(WindowState):
             rl.DrawTextEx(
                 ctx.font,
                 nick,
-                [width - size.x, i * size.y],
+                [self._width - size.x, i * size.y],
                 ctx.CONSTANTS.FONT_SIZE_SMALL,
                 ctx.CONSTANTS.FONT_SPACING,
                 ctx.CONSTANTS.COLORS.BEIGE,
@@ -39,7 +41,7 @@ class ServerLobby(WindowState):
 
         # draw scrollable vertically game list
 
-        return super().draw(ctx, width, height)
+        return super().draw(ctx)
 
     def _on_connect(self, client: ClientConnected) -> None:
         self._players_info.append(client.nick)

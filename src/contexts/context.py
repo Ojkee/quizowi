@@ -4,6 +4,7 @@ import raylib as rl
 
 
 class Colors:
+    LIGHT_GREY: list[int] = [127, 127, 127, 255]
     DARK_GREY: list[int] = [51, 51, 51, 255]
     BEIGE: list[int] = [255, 238, 201, 255]
 
